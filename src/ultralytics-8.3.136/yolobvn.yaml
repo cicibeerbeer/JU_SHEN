@@ -1,7 +1,4 @@
-path: ./datasets/bvn
-
-train: images/train
-val: images/val
-
+train: E:/PROGRAMS/Tennis/JU_SHEN/datasets/bvn/images/train
+val: E:/PROGRAMS/Tennis/JU_SHEN/datasets/bvn/images/val
 nc: 1
 names: ['tennis']
