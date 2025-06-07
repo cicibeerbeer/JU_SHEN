@@ -1,4 +1,4 @@
-train: E:/PROGRAMS/Tennis/JU_SHEN/datasets/bvn/images/train
-val: E:/PROGRAMS/Tennis/JU_SHEN/datasets/bvn/images/val
+train: E:\PROGRAMS\Tennis\JU_SHEN\src\ultralytics-8.3.136\datasets\bvn\images\train
+val: E:\PROGRAMS\Tennis\JU_SHEN\src\ultralytics-8.3.136\datasets\bvn\images\val
 nc: 1
 names: ['tennis']
