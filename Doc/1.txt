@@ -1,0 +1,111 @@
+技术文档
+零、如何启动？
+在JU_SHEN目录下执行
+./run.sh
+即可
+你的文件放在dataset_path =  "datasets" / "bvn" / "images" / "train"
+在main.py  31行检测
+输出的文件有图片和json文件 在 runs" / "detect" / "predict_custom"
+    
+ # 设置数据集路径
+    if args.dataset_dir:
+        dataset_path = Path(args.dataset_dir)
+    else:
+        # 默认验证集位置
+        dataset_path = base_dir / "datasets" / "bvn" / "images" / "train"
+    
+    # 设置输出目录
+    if args.output_dir:
+        output_dir = Path(args.output_dir)
+    else:
+        output_dir = base_dir / "runs" / "detect" / "predict_custom"
+    
+一、系统概述
+本系统基于YOLOv8模型实现网球目标检测功能，支持批量处理图像数据集模式。系统通过优化推理流程，在保证检测精度的同时提升处理效率，适用于网球运动分析、比赛数据统计等场景。
+
+二、依赖
+大致如下
+ultralytics==8.3.136
+ultralytics-thop==2.0.14
+torch==2.7.0
+torchvision==0.22.0
+torchaudio==2.7.0
+opencv-python==4.11.0.86
+numpy==2.0.2
+pillow==11.2.1
+pandas==2.2.3
+pyyaml==6.0.2
+tqdm==4.67.1
+scipy==1.13.1
+psutil==7.0.0
+filelock==3.18.0
+platformdirs==4.3.8
+
+三、系统组成
+run.sh: 系统启动脚本
+
+
+process.py: 核心处理模块
+
+大致有如下内容
+init_model(): 初始化YOLOv8模型
+
+默认模型位置: ./src/ultralytics-8.3.136/runs/detect/train12/weights/best.pt
+
+自动识别网球类别ID
+
+process_img(): 处理单张图像
+
+支持调整置信度阈值
+
+可选保存JSON结果和标注图像
+
+返回规范化检测结果
+
+main.py: 主程序
+大致有如下内容
+
+解析命令行参数（模型路径，数据集目录等）
+
+初始化模型
+
+批量处理数据集中的图像
+
+性能监控和报告
+
+还有1.py ，这是有的图片没有网球 ，就没打标签，用这个脚本生成空的标签文件。
+
+四、参数
+关键路径
+
+项目根目录: $HOME/桌面/JU_SHEN
+
+模型路径: ./src/ultralytics-8.3.136/runs/detect/train12/weights/best.pt
+
+数据集目录: ./src/ultralytics-8.3.136/datasets/bvn/images/val
+
+输出目录: ./src/ultralytics-8.3.136/runs/detect/predict_custom
+运行参数
+
+置信度阈值: 0.6
+
+图像尺寸: 384x640（宽x高）
+
+批量处理模式: 自动遍历数据集目录
+
+
+
+
+五、项目信息
+文件目录结构
+
+   ./run.sh                    启动脚本
+   ./src/ultralytics-8.3.136/ process.py            核心处理模块
+   ./src/ultralytics-8.3.136/ main.py               主程序
+   ./src/ultralytics-8.3.136/  YOLOv8源码和模型
+   ./src/ultralytics-8.3.136/ datasets/                 训练验证数据集
+版本信息
+
+YOLOv8版本: 8.3.136
+
+
