@@ -12,7 +12,7 @@ echo "工作目录: $PWD"
 
 # 设置关键路径
 YOLO_DIR="./src/ultralytics-8.3.136"
-MODEL_PATH="$YOLO_DIR/runs/detect/train12/weights/best.pt"
+MODEL_PATH="$YOLO_DIR/runs/detect/train9/weights/best.pt"
 VALIDATION_DIR="./src/ultralytics-8.3.136/datasets/bvn/images/val"
 PYTHON_SCRIPT="$YOLO_DIR/main.py"
 OUTPUT_DIR="$YOLO_DIR/runs/detect/predict_custom"
@@ -28,11 +28,10 @@ PYTHON_EXEC=$(which python)
 [ -z "$PYTHON_EXEC" ] && { echo "错误: 未找到Python解释器"; exit 1; }
 
 # 创建输出目录
-mkdir -p "$OUTPUT_DIR/images" 2>/dev/null
-mkdir -p "$OUTPUT_DIR/json" 2>/dev/null
+mkdir -p "$OUTPUT_DIR" 2>/dev/null
 
 # 启动参数
-CONFIDENCE=0.6
+CONFIDENCE=0.45
 
 echo "==============================================="
 echo "网球检测系统启动"
@@ -48,12 +47,15 @@ echo "==============================================="
 start_time=$(date +%s)
 
 # 构建参数
-PYTHON_ARGS=""
-if [ "$SAVE_OUTPUT" = true ]; then
-    PYTHON_ARGS="--save_output"
-fi
+PYTHON_ARGS=(
+    "--model_path" "$MODEL_PATH"
+    "--dataset_dir" "$VALIDATION_DIR"
+    "--output_dir" "$OUTPUT_DIR"
+    "--conf_threshold" "$CONFIDENCE"
+    "--save_output" "$SAVE_OUTPUT"
+)
 
-python "$PYTHON_SCRIPT" $PYTHON_ARGS
+python "$PYTHON_SCRIPT" "${PYTHON_ARGS[@]}"
 exit_code=$?
 end_time=$(date +%s)
 duration=$((end_time - start_time))
@@ -66,12 +68,12 @@ if [ $exit_code -eq 0 ]; then
     
     if [ "$SAVE_OUTPUT" = true ]; then
         echo "输出文件:"
-        echo "  - JSON文件: $(find "$OUTPUT_DIR/json" -type f -name "*.json" | wc -l) 个"
-        echo "  - 标注图片: $(find "$OUTPUT_DIR/images" -type f -name "*.jpg" | wc -l) 张"
+        echo "  - JSON文件: $(find "$OUTPUT_DIR" -type f -name "*_result.json" | wc -l) 个"
+        echo "  - 标注图片: $(find "$OUTPUT_DIR/images" -type f -name "*_detected.jpg" | wc -l) 张"
         
         # 显示前5个输出文件作为示例
         echo "示例输出文件:"
-        find "$OUTPUT_DIR/json" -maxdepth 1 -type f -name "*.json" | head -n 5
+        find "$OUTPUT_DIR" -maxdepth 1 -type f -name "*_result.json" | head -n 5
     fi
     
     echo "结束时间: $(date +'%Y-%m-%d %H:%M:%S')"

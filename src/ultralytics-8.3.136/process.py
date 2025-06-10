@@ -16,7 +16,7 @@ def init_model(model_path=None):
 
     if model_path is None:
         script_dir = Path(__file__).parent.absolute()
-        model_path = script_dir / "runs" / "detect" / "train3" / "weights" / "best.pt"
+        model_path = script_dir / "runs" / "detect" / "train" / "weights" / "best.pt"
 
     print(f"模型路径: {model_path}")
     if not model_path.exists():
@@ -42,7 +42,7 @@ def init_model(model_path=None):
         raise
 
 
-def process_img(img_path, conf=0.2, save_output=True, output_dir='runs/detect'):
+def process_img(img_path, conf=0.45, save_output=True, output_dir='runs/detect'):
     global model
     if model is None:
         try:

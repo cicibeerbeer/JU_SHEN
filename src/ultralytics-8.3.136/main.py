@@ -25,7 +25,7 @@ def main():
                         help="数据集目录 (默认为验证集)")
     parser.add_argument("--output_dir", type=str, default=None,
                         help="输出目录 (默认为predict_custom)")
-    parser.add_argument("--conf_threshold", type=float, default=0.20,
+    parser.add_argument("--conf_threshold", type=float, default=0.45,
                         help="置信度阈值 (默认0.20)")
     parser.add_argument("--save_output", type=str2bool, default=True,
                         help="是否保存输出文件和检测图像 (默认: 是)")
